@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate Verification - JNTU-GV College of Engineering</title>
+    <title>Certificate Verification - JNTU-GV University</title>
     <style>
         * {
             margin: 0;
@@ -274,8 +274,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="assets/jntu-logo.png" alt="JNTU-GV Logo" class="logo">
-            <h1>JNTU-GV College of Engineering</h1>
+            <img src="assets/jntu.png" alt="JNTU-GV Logo" class="logo">
+            <h1>Jawaharlal Nehru Technological University - Gurajada, Vizianagaram</h1>
             <h2>Certificate Verification System</h2>
             <div class="course-info">
                 This is to certify that the candidate has successfully completed a<br>
@@ -286,11 +286,11 @@
 
         <div class="verification-section">
             <div class="instruction-text">
-                <strong>📋 Important:</strong> Please check the Certificate ID printed below the QR code on your certificate.
+                <strong>📋 Important:</strong> You can verify your certificate using either the Certificate ID (printed below the QR code) or your Full Name.
             </div>
 
             <div class="input-group">
-                <input type="text" id="certificateId" placeholder="Enter Certificate ID (e.g., MLDL-JNTUGV-001)" autocomplete="off">
+                <input type="text" id="certificateId" placeholder="Enter Certificate ID or Full Name" autocomplete="off">
                 <button class="btn" onclick="verifyCertificate()">Verify Certificate</button>
             </div>
 
@@ -373,22 +373,37 @@
         }
 
         function verifyCertificate() {
-            const certId = document.getElementById('certificateId').value.trim();
+            const searchInput = document.getElementById('certificateId').value.trim();
             const errorMessage = document.getElementById('errorMessage');
             const resultSection = document.getElementById('resultSection');
 
             errorMessage.classList.remove('show');
             resultSection.classList.remove('show');
 
-            if (!certId) {
-                showError('Please enter a Certificate ID');
+            if (!searchInput) {
+                showError('Please enter a Certificate ID or Name');
                 return;
             }
 
-            const certificate = certificatesData[certId];
+            // First, try to find by exact ID match
+            let certId = searchInput;
+            let certificate = certificatesData[certId];
+
+            // If not found by ID, search by name (case-insensitive)
+            if (!certificate) {
+                const searchLower = searchInput.toLowerCase();
+                
+                for (const [id, cert] of Object.entries(certificatesData)) {
+                    if (cert.name && cert.name.toLowerCase().includes(searchLower)) {
+                        certId = id;
+                        certificate = cert;
+                        break;
+                    }
+                }
+            }
 
             if (!certificate) {
-                showError('Invalid Certificate ID. Please check and try again.');
+                showError('Certificate not found. Please check the ID or Name and try again.');
                 return;
             }
 
