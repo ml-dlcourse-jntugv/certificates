@@ -1,0 +1,21 @@
+CERTIFICATE PLACEHOLDER
+
+This is a placeholder file. You need to replace this with actual PDF certificates.
+
+File name format: MLDL-JNTUGV-XXX.pdf
+
+For example:
+- MLDL-JNTUGV-015.pdf (for Dr K Dayana)
+- MLDL-JNTUGV-025.pdf (for SRADHANJALI PATTANAIK)
+- etc.
+
+Each PDF certificate should contain:
+1. JNTU-GV College of Engineering header/logo
+2. Candidate name
+3. Course details: "40 Hours Certification Course on Machine Learning & Deep Learning"
+4. Duration: "06-10-2025 to 27-10-2025"
+5. Grade obtained
+6. QR Code linking to: https://yourusername.github.io/certificates/verify.html?id=MLDL-JNTUGV-XXX
+7. Certificate ID printed below the QR code
+
+Make sure to generate 37 PDF files total, one for each person listed in id.csv.

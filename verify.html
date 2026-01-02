@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification - JNTU-GV College of Engineering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: #34495e;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .course-info {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            line-height: 1.8;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .verification-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .instruction-text {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #856404;
+            font-size: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .result-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .verified-badge::before {
+            content: "✓ ";
+            font-size: 20px;
+        }
+
+        .certificate-details {
+            margin: 20px 0;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        .certificate-preview {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .certificate-preview iframe {
+            width: 100%;
+            height: 600px;
+            border: 3px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .certificate-preview embed {
+            width: 100%;
+            height: 600px;
+            border: 3px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .certificate-preview iframe,
+            .certificate-preview embed {
+                height: 400px;
+            }
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .download-btn:hover {
+            background: #229954;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .header h2 {
+                font-size: 18px;
+            }
+
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .verification-section,
+            .result-section,
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="assets/jntu-logo.png" alt="JNTU-GV Logo" class="logo">
+            <h1>JNTU-GV College of Engineering</h1>
+            <h2>Certificate Verification System</h2>
+            <div class="course-info">
+                This is to certify that the candidate has successfully completed a<br>
+                <strong>40 Hours Certification Course on Machine Learning & Deep Learning</strong><br>
+                held from <strong>06-10-2025</strong> to <strong>27-10-2025</strong>.
+            </div>
+        </div>
+
+        <div class="verification-section">
+            <div class="instruction-text">
+                <strong>📋 Important:</strong> Please check the Certificate ID printed below the QR code on your certificate.
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="certificateId" placeholder="Enter Certificate ID (e.g., MLDL-JNTUGV-001)" autocomplete="off">
+                <button class="btn" onclick="verifyCertificate()">Verify Certificate</button>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <div class="verified-badge">Verified Certificate</div>
+            
+            <div class="certificate-details">
+                <div class="detail-row">
+                    <div class="detail-label">Certificate ID:</div>
+                    <div class="detail-value" id="displayId"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Full Name:</div>
+                    <div class="detail-value" id="displayName"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Designation:</div>
+                    <div class="detail-value" id="displayDesignation"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Department:</div>
+                    <div class="detail-value" id="displayDepartment"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">College:</div>
+                    <div class="detail-value" id="displayCollege"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Grade Obtained:</div>
+                    <div class="detail-value" id="displayGrade"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Course:</div>
+                    <div class="detail-value" id="displayCourse"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Duration:</div>
+                    <div class="detail-value" id="displayDuration"></div>
+                </div>
+            </div>
+
+            <div class="certificate-preview">
+                <iframe id="certificatePdf" src="" type="application/pdf"></iframe>
+            </div>
+
+            <div style="text-align: center;">
+                <a id="downloadLink" href="" download class="download-btn">Download Certificate (PDF)</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let certificatesData = {};
+
+        async function loadCertificatesData() {
+            try {
+                const response = await fetch('data.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load certificate data');
+                }
+                certificatesData = await response.json();
+                checkUrlParameter();
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                showError('Unable to load certificate database. Please try again later.');
+            }
+        }
+
+        function checkUrlParameter() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const certId = urlParams.get('id');
+            
+            if (certId) {
+                document.getElementById('certificateId').value = certId;
+                verifyCertificate();
+            }
+        }
+
+        function verifyCertificate() {
+            const certId = document.getElementById('certificateId').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const resultSection = document.getElementById('resultSection');
+
+            errorMessage.classList.remove('show');
+            resultSection.classList.remove('show');
+
+            if (!certId) {
+                showError('Please enter a Certificate ID');
+                return;
+            }
+
+            const certificate = certificatesData[certId];
+
+            if (!certificate) {
+                showError('Invalid Certificate ID. Please check and try again.');
+                return;
+            }
+
+            displayCertificate(certId, certificate);
+        }
+
+        function displayCertificate(certId, cert) {
+            document.getElementById('displayId').textContent = certId;
+            document.getElementById('displayName').textContent = cert.name || 'N/A';
+            document.getElementById('displayDesignation').textContent = cert.designation || 'N/A';
+            document.getElementById('displayDepartment').textContent = cert.department || 'N/A';
+            document.getElementById('displayCollege').textContent = cert.college || 'N/A';
+            document.getElementById('displayGrade').textContent = cert.grade || 'N/A';
+            document.getElementById('displayCourse').textContent = `${cert.hours} Hours Certification Course on ${cert.course}`;
+            document.getElementById('displayDuration').textContent = `${cert.from} to ${cert.to}`;
+            
+            const certificatePdf = document.getElementById('certificatePdf');
+            const downloadLink = document.getElementById('downloadLink');
+            
+            certificatePdf.src = cert.file;
+            
+            downloadLink.href = cert.file;
+            downloadLink.download = `${certId}_${cert.name.replace(/\s+/g, '_')}.pdf`;
+
+            document.getElementById('resultSection').classList.add('show');
+            
+            document.getElementById('resultSection').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        document.getElementById('certificateId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyCertificate();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', loadCertificatesData);
+    </script>
+</body>
+</html>
